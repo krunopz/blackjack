@@ -17,7 +17,6 @@ import random
 from art import logo
 print(logo)
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
-blackjack=21
 
 user=list()
 dealer=list()
@@ -36,6 +35,7 @@ for num in user:
 
 print(f"Your cards {user}, current score {u_score}")
 print(f"Dealer's first card {dealer[0]}")
+d_score+=dealer[0]
 
 ### Whan drawing a card add it to sum
 def draw(u_score):
@@ -49,8 +49,13 @@ def draw(u_score):
   else:
     user.append(drawn_card)
     u_score+=drawn_card
-  print(f"Your cards {user}, current score {u_score}")
-  print(f"Dealer's first card {dealer[0]}")
+  #PLAYER LOST if he went over 21
+  if u_score>21:
+      print(f"Your cards {user}, current score {u_score}. You lose!")
+      exit()
+  else:
+    print(f"Your cards {user}, current score {u_score}")
+    print(f"Dealer's first card {dealer[0]}")
   return u_score
   return user
 
@@ -66,42 +71,53 @@ if next!="y" and next!="n":
 elif next=="y":
   while next=="y":
     draw(u_score)
-    next=input("Type 'y' to get another card, type 'n' to pass: ")
-    if next!="y" and next!="n":
-      next=input("You put a wrong input. Please type 'y' or 'n'")
+    if u_score>21:
+      print("You lose! Sorry")
+      exit
+    else:
+      next=input("Type 'y' to get another card, type 'n' to pass: ")
       if next!="y" and next!="n":
-        print("It seams that you don't want to play this game. Game over!")
-        exit()
+        next=input("You put a wrong input. Please type 'y' or 'n'")
+        if next!="y" and next!="n":
+          print("It seams that you don't want to play this game. Game over!")
+          exit()
+      else:
 
-#Player ends, dealer starts:
-while d_score<=21 and d_score<=u_score and u_score<=21:
-  dealer.append(random.choice(cards))
-  d_score=0
-  for n in dealer:
-    d_score+=n
+      #Player ends, dealer starts:
+        while d_score<=21 and d_score<=u_score and u_score<=21:
+          dealer.append(random.choice(cards))
+          d_score=0
+          for n in dealer:
+            d_score+=n
+elif next=='n':
+   while d_score<=21 and d_score<=u_score and u_score<=21:
+          dealer.append(random.choice(cards))
+          d_score=0
+          for n in dealer:
+            d_score+=n
 
 #results
-def result(u_score,d_score):
-  print(f"u_Score:{u_score}, d_score:{d_score}")
-  print(user)
-  print(dealer)
-  print(f"user:  {u_score}")
-  print(f"dealer:  {d_score}")
-  if u_score>d_score and u_score<=21:
+def result(user,dealer):
+  user_final=0
+  dealer_score=0
+  for i in user:
+    user_final+=i
+  for i in dealer:
+    dealer_score+=i
+  if user_final>dealer_score and user_final<=21:
     print("User wins.")
-  elif d_score>u_score and d_score<=21:
+  elif dealer_score>user_final and dealer_score<=21:
     print("Dealer wins.")
-  elif u_score==d_score and d_score<=21:
+  elif user_final==dealer_score and dealer_score<=21:
     print("Draw.")
-
-
-
-
-
+  elif user_final<dealer_score and dealer_score>21:
+    print("User wins.")
+  elif user_final>21 and dealer_score<=21:
+    print("Dealer wins.")
 
 
 print(f"Dealer got {dealer}, and his score is {d_score}")
-result(u_score,d_score)
+result(user,dealer)
 
 
 
