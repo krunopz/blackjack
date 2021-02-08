@@ -23,7 +23,8 @@ user=list()
 dealer=list()
 u_score=0
 d_score=0
-#Starting the game... User and the dealer take two cards
+
+#####FIRST ROUND####################
 
 for i in range(2):
   user.append(random.choice(cards))
@@ -36,16 +37,22 @@ for num in user:
 print(f"Your cards {user}, current score {u_score}")
 print(f"Dealer's first card {dealer[0]}")
 
-
+### Whan drawing a card add it to sum
 def draw(u_score):
-  user.append(random.choice(cards))
-  u_score=0
-  for num in user:
-    u_score+=num
-
+  drawn_card=random.choice(cards)
+  if u_score<=10 and drawn_card==11:
+    user.append(11)
+    u_score=u_score+11
+  elif u_score>10 and drawn_card==11:
+    user.append(1)
+    u_score+=1
+  else:
+    user.append(drawn_card)
+    u_score+=drawn_card
   print(f"Your cards {user}, current score {u_score}")
   print(f"Dealer's first card {dealer[0]}")
   return u_score
+  return user
 
 
 
@@ -75,6 +82,9 @@ while d_score<=21 and d_score<=u_score and u_score<=21:
 
 #results
 def result(u_score,d_score):
+  print(f"u_Score:{u_score}, d_score:{d_score}")
+  print(user)
+  print(dealer)
   print(f"user:  {u_score}")
   print(f"dealer:  {d_score}")
   if u_score>d_score and u_score<=21:
